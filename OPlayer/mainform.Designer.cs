@@ -1,4 +1,6 @@
 ﻿
+using System.Windows.Forms;
+
 namespace OPlayer
 {
     partial class mainform
@@ -34,6 +36,11 @@ namespace OPlayer
             this.exit = new System.Windows.Forms.Button();
             this.forma = new System.Windows.Forms.Panel();
             this.main = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.pbox = new System.Windows.Forms.PictureBox();
             this.title = new System.Windows.Forms.Label();
             this.left = new System.Windows.Forms.Panel();
             this.list_links = new System.Windows.Forms.ListBox();
@@ -46,14 +53,13 @@ namespace OPlayer
             this.get_films = new System.Windows.Forms.Button();
             this.statusbar = new System.Windows.Forms.StatusStrip();
             this.status = new System.Windows.Forms.ToolStripStatusLabel();
-            this.pbox = new System.Windows.Forms.PictureBox();
             this.top.SuspendLayout();
             this.forma.SuspendLayout();
             this.main.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbox)).BeginInit();
             this.left.SuspendLayout();
             this.panel1.SuspendLayout();
             this.statusbar.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbox)).BeginInit();
             this.SuspendLayout();
             // 
             // top
@@ -65,7 +71,7 @@ namespace OPlayer
             this.top.Location = new System.Drawing.Point(1, 1);
             this.top.Name = "top";
             this.top.Padding = new System.Windows.Forms.Padding(1);
-            this.top.Size = new System.Drawing.Size(448, 30);
+            this.top.Size = new System.Drawing.Size(395, 30);
             this.top.TabIndex = 0;
             this.top.MouseDown += new System.Windows.Forms.MouseEventHandler(this.top_MouseDown);
             // 
@@ -87,13 +93,14 @@ namespace OPlayer
             this.exit.FlatAppearance.BorderColor = System.Drawing.Color.LightGray;
             this.exit.FlatAppearance.BorderSize = 0;
             this.exit.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Red;
-            this.exit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.exit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DimGray;
             this.exit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.exit.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.exit.Location = new System.Drawing.Point(420, 3);
+            this.exit.Location = new System.Drawing.Point(369, 3);
             this.exit.Name = "exit";
             this.exit.Size = new System.Drawing.Size(24, 24);
             this.exit.TabIndex = 0;
+            this.exit.Text = "X";
             this.exit.UseVisualStyleBackColor = false;
             this.exit.Click += new System.EventHandler(this.exit_Click);
             // 
@@ -106,30 +113,111 @@ namespace OPlayer
             this.forma.Dock = System.Windows.Forms.DockStyle.Fill;
             this.forma.Location = new System.Drawing.Point(1, 31);
             this.forma.Name = "forma";
-            this.forma.Size = new System.Drawing.Size(448, 568);
+            this.forma.Size = new System.Drawing.Size(395, 568);
             this.forma.TabIndex = 1;
             // 
             // main
             // 
             this.main.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
+            this.main.Controls.Add(this.button2);
+            this.main.Controls.Add(this.button1);
+            this.main.Controls.Add(this.comboBox1);
+            this.main.Controls.Add(this.label5);
             this.main.Controls.Add(this.pbox);
             this.main.Controls.Add(this.title);
             this.main.Dock = System.Windows.Forms.DockStyle.Fill;
             this.main.Location = new System.Drawing.Point(175, 0);
             this.main.Name = "main";
-            this.main.Size = new System.Drawing.Size(273, 546);
+            this.main.Padding = new System.Windows.Forms.Padding(1);
+            this.main.Size = new System.Drawing.Size(220, 546);
             this.main.TabIndex = 2;
+            this.main.MouseDown += new System.Windows.Forms.MouseEventHandler(this.main_MouseDown);
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
+            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(74)))), ((int)(((byte)(74)))));
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Calibri", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button2.ForeColor = System.Drawing.Color.LightGray;
+            this.button2.Location = new System.Drawing.Point(9, 402);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(200, 30);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "Скачать фильм";
+            this.button2.UseVisualStyleBackColor = false;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(74)))), ((int)(((byte)(74)))));
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Calibri", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button1.ForeColor = System.Drawing.Color.LightGray;
+            this.button1.Location = new System.Drawing.Point(9, 366);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(200, 30);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "Смотреть онлайн";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.comboBox1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.comboBox1.Font = new System.Drawing.Font("Calibri", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.comboBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Half SD (240p)",
+            "SD (360p)",
+            "HD (720p)",
+            "Full HD (1080p)"});
+            this.comboBox1.Location = new System.Drawing.Point(9, 337);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(200, 23);
+            this.comboBox1.TabIndex = 3;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Calibri", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label5.ForeColor = System.Drawing.Color.LightGray;
+            this.label5.Location = new System.Drawing.Point(7, 322);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(62, 17);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Качество";
+            // 
+            // pbox
+            // 
+            this.pbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbox.Location = new System.Drawing.Point(9, 24);
+            this.pbox.Name = "pbox";
+            this.pbox.Size = new System.Drawing.Size(200, 294);
+            this.pbox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbox.TabIndex = 1;
+            this.pbox.TabStop = false;
+            this.pbox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbox_MouseDown);
             // 
             // title
             // 
             this.title.AutoSize = true;
-            this.title.Font = new System.Drawing.Font("Calibri", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.title.Font = new System.Drawing.Font("Calibri", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.title.ForeColor = System.Drawing.Color.LightGray;
-            this.title.Location = new System.Drawing.Point(6, 4);
+            this.title.Location = new System.Drawing.Point(7, 5);
             this.title.Name = "title";
-            this.title.Size = new System.Drawing.Size(31, 17);
+            this.title.Size = new System.Drawing.Size(0, 13);
             this.title.TabIndex = 0;
-            this.title.Text = "title";
             // 
             // left
             // 
@@ -151,11 +239,14 @@ namespace OPlayer
             // list_links
             // 
             this.list_links.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.list_links.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.list_links.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.list_links.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.list_links.FormattingEnabled = true;
+            this.list_links.ItemHeight = 14;
             this.list_links.Location = new System.Drawing.Point(4, 108);
             this.list_links.Name = "list_links";
-            this.list_links.Size = new System.Drawing.Size(167, 394);
+            this.list_links.Size = new System.Drawing.Size(167, 396);
             this.list_links.TabIndex = 8;
             this.list_links.Click += new System.EventHandler(this.list_links_Click);
             // 
@@ -187,12 +278,12 @@ namespace OPlayer
             this.genre_list.Cursor = System.Windows.Forms.Cursors.Hand;
             this.genre_list.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.genre_list.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.genre_list.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.genre_list.Font = new System.Drawing.Font("Calibri", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.genre_list.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.genre_list.FormattingEnabled = true;
             this.genre_list.Location = new System.Drawing.Point(4, 64);
             this.genre_list.Name = "genre_list";
-            this.genre_list.Size = new System.Drawing.Size(167, 24);
+            this.genre_list.Size = new System.Drawing.Size(167, 23);
             this.genre_list.TabIndex = 5;
             this.genre_list.SelectedIndexChanged += new System.EventHandler(this.genre_list_SelectedIndexChanged);
             // 
@@ -235,18 +326,19 @@ namespace OPlayer
             this.get_films.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.get_films.Cursor = System.Windows.Forms.Cursors.Hand;
             this.get_films.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.get_films.Enabled = false;
             this.get_films.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.get_films.FlatAppearance.BorderSize = 0;
             this.get_films.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
             this.get_films.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(74)))), ((int)(((byte)(74)))));
             this.get_films.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.get_films.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.get_films.Font = new System.Drawing.Font("Calibri", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.get_films.ForeColor = System.Drawing.Color.LightGray;
             this.get_films.Location = new System.Drawing.Point(1, 1);
             this.get_films.Name = "get_films";
             this.get_films.Size = new System.Drawing.Size(165, 31);
             this.get_films.TabIndex = 0;
-            this.get_films.Text = "Получить фильмы";
+            this.get_films.Text = "Обновить список";
             this.get_films.UseVisualStyleBackColor = false;
             this.get_films.Click += new System.EventHandler(this.get_films_Click);
             // 
@@ -257,7 +349,7 @@ namespace OPlayer
             this.status});
             this.statusbar.Location = new System.Drawing.Point(0, 546);
             this.statusbar.Name = "statusbar";
-            this.statusbar.Size = new System.Drawing.Size(448, 22);
+            this.statusbar.Size = new System.Drawing.Size(395, 22);
             this.statusbar.TabIndex = 0;
             this.statusbar.Text = "statusStrip1";
             // 
@@ -270,40 +362,31 @@ namespace OPlayer
             this.status.Size = new System.Drawing.Size(29, 17);
             this.status.Text = "Idle";
             // 
-            // pbox
-            // 
-            this.pbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbox.Location = new System.Drawing.Point(9, 24);
-            this.pbox.Name = "pbox";
-            this.pbox.Size = new System.Drawing.Size(200, 294);
-            this.pbox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbox.TabIndex = 1;
-            this.pbox.TabStop = false;
-            // 
             // mainform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(450, 600);
+            this.ClientSize = new System.Drawing.Size(397, 600);
             this.Controls.Add(this.forma);
             this.Controls.Add(this.top);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "mainform";
             this.Padding = new System.Windows.Forms.Padding(1);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Load += new System.EventHandler(this.mainform_Load);
             this.top.ResumeLayout(false);
             this.top.PerformLayout();
             this.forma.ResumeLayout(false);
             this.forma.PerformLayout();
             this.main.ResumeLayout(false);
             this.main.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbox)).EndInit();
             this.left.ResumeLayout(false);
             this.left.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.statusbar.ResumeLayout(false);
             this.statusbar.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -328,6 +411,10 @@ namespace OPlayer
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label title;
         private System.Windows.Forms.PictureBox pbox;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }
 

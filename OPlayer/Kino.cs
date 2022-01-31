@@ -23,7 +23,7 @@ namespace OPlayer
             films = new List<string>();
             pics = new List<string>();
             asrequester = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/69.0";
-            
+
         }
 
         public async Task<List<string>> GetLinks(int page, int genre)
