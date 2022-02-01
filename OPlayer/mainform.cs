@@ -3,6 +3,7 @@ using AngleSharp.Io;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
@@ -408,7 +409,7 @@ namespace OPlayer
             kino.links.Clear();
             kino.films.Clear();
             kino.pics.Clear();
-            list_links.Items.Clear();
+          //  list_links.Items.Clear();
             pbox.Image = null;
             title.Text = "";
             get_films.Enabled = true;
@@ -427,7 +428,8 @@ namespace OPlayer
                     {
                         Action add = () =>
                         {
-                            list_links.Items.Add(kino.films[i]);
+                           // list_links.Items.Add(kino.films[i]);
+                            list_links.DataSource = kino.films;
                             bar.Value = i;
                             bar.Progress = $"{i}/{kino.films.Count - 1}";
                         };
@@ -721,6 +723,14 @@ namespace OPlayer
             {
                 MessageBox.Show($"К сожалению видео не доступно", "Online Video Player", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private void search_value_TextChanged(object sender, EventArgs e)
+        {
+            if (search_value.Text.Length > 0)
+                list_links.DataSource = kino.films.Where(c => c.ToLower().StartsWith(search_value.Text.ToLower())).ToList();
+            else
+                list_links.DataSource = kino.films;
         }
     }
 }

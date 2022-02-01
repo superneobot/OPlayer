@@ -308,6 +308,7 @@ namespace OPlayer
             this.search_value.Size = new System.Drawing.Size(167, 23);
             this.search_value.TabIndex = 4;
             this.search_value.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.search_value.TextChanged += new System.EventHandler(this.search_value_TextChanged);
             // 
             // label1
             // 
