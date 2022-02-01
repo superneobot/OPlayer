@@ -55,7 +55,7 @@ namespace OPlayer
                 }
             }
         }
-        private int _maximum;
+        private int _maximum = 100;
         public int Maximum
         {
             get => _maximum;

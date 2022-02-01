@@ -1,12 +1,17 @@
-﻿using System;
+﻿using AngleSharp;
+using AngleSharp.Io;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace OPlayer
 {
@@ -15,6 +20,11 @@ namespace OPlayer
         Kino kino = new Kino();
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
+        public string source;
+        public string stream_url;
+        public string quality;
+        public string nsource;
+        public string fname;
 
         [DllImportAttribute("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
@@ -301,6 +311,7 @@ namespace OPlayer
             kino.films.Clear();
             kino.pics.Clear();
             list_links.Items.Clear();
+            bar.Maximum = kino.pages;
             for (int i = 1; i < kino.pages; i++)
             {
 
@@ -308,30 +319,61 @@ namespace OPlayer
                 await kino.GetPics(i, genre);
                 await kino.GetFilms(i, genre);
                 await kino.GetLinks(i, genre);
-                foreach (var item in kino.films)
+
+                for (int i1 = 0; i1 < kino.films.Count; i1++)
                 {
+                    string item = kino.films[i1];
                     list_links.Items.Add(item);
+
+                    bar.Value = i;
+                    string val = $"{(i * 100) / kino.pages}%";
+                    bar.Progress = val;
                 }
+                status.Text = $"Обновляем категорию {genre_list.Items[genre_list.SelectedIndex]}";
+                genre_list.Enabled = false;
             }
+            bar.Value = 0;
+            bar.Progress = "";
             Saving(genre);
+            status.Text = "Готов";
+            genre_list.Enabled = true;
         }
 
-        private void list_links_Click(object sender, EventArgs e)
+        private async void list_links_Click(object sender, EventArgs e)
         {
-            if (list_links.SelectedIndices.Count >= 0)
+            quality_list.SelectedIndex = -1;
+            dload.Text = "Скачать фильм";
+            film_show.Enabled = false;
+            quality_list.Enabled = false;
+            dload.Enabled = false;
+            try
             {
-                try
+                if (list_links.SelectedIndices.Count >= 0)
                 {
+
                     var pic_index = list_links.Items.IndexOf(list_links.SelectedItems[0]);
 
                     pbox.LoadAsync(kino.pics[pic_index]);
                     title.Text = kino.films[pic_index];
-                }
-                catch (Exception)
-                {
 
+                    await GetStreamLink(kino.links[pic_index]);
+                    await GetVideoSource(stream_url);
+                    if (CheckURL(new Uri(stream_url)))
+                    {
+                        quality_list.Enabled = true;
+                        fname = kino.films[pic_index].Replace(":", "-");
+                    }
+                    else
+                    {
+                        //
+                    }
                 }
             }
+            catch (Exception)
+            {
+
+            }
+
         }
 
         private void label4_MouseDown(object sender, MouseEventArgs e)
@@ -377,7 +419,7 @@ namespace OPlayer
                 kino.links = LoadData($@"Data\links_{genre}.txt");
                 kino.films = LoadData($@"Data\films_{genre}.txt");
                 kino.pics = LoadData($@"Data\pics_{genre}.txt");
-                // progress.Maximum = kino.films.Count;
+                bar.Maximum = kino.films.Count;
                 await Task.Run(() =>
                 {
 
@@ -386,11 +428,13 @@ namespace OPlayer
                         Action add = () =>
                         {
                             list_links.Items.Add(kino.films[i]);
-                            // progress.Value = i;
+                            bar.Value = i;
+                            bar.Progress = $"{i}/{kino.films.Count - 1}";
                         };
                         Invoke(add);
                     }
                 });
+
             }
             catch
             {
@@ -439,5 +483,249 @@ namespace OPlayer
 
         }
 
+        private string GetFileSize(Uri uriPath)
+        {
+            var webRequest = HttpWebRequest.Create(uriPath);
+            webRequest.Method = "HEAD";
+
+            using (var webResponse = webRequest.GetResponse())
+            {
+                var fileSize = webResponse.Headers.Get("Content-Length");
+                var fileSizeInMegaByte = Math.Round(Convert.ToDouble(fileSize) / 1024.0 / 1024.0, 2);
+                return fileSizeInMegaByte + " MB";
+            }
+        }
+
+        private void quality_list_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                switch (quality_list.SelectedIndex)
+                {
+                    case 0:
+                        quality = "240.mp4";
+                        nsource = $"{source}{quality}";
+                        if (CheckURL(new Uri(nsource)) == true)
+                        {
+                            try
+                            {
+                                film_show.Enabled = true;
+                                nsource = $"{source}{quality}";
+                                dload.Text = $"Скачать фильм({GetFileSize(new Uri(nsource))})";
+                                dload.Enabled = true;
+                            }
+                            catch
+                            {
+                                dload.Text = $"Скачать фильм";
+                            }
+                        }
+                        else
+                        {
+                            film_show.Enabled = false;
+                            dload.Enabled = false;
+                            dload.Text = $"Скачать фильм";
+                        }
+                        break;
+                    case 1:
+                        quality = "360.mp4";
+                        nsource = $"{source}{quality}";
+                        if (CheckURL(new Uri(nsource)) == true)
+                        {
+                            try
+                            {
+                                film_show.Enabled = true;
+                                nsource = $"{source}{quality}";
+                                dload.Text = $"Скачать фильм({GetFileSize(new Uri(nsource))})";
+                                dload.Enabled = true;
+                            }
+                            catch
+                            {
+                                dload.Text = $"Скачать фильм";
+                            }
+                        }
+                        else
+                        {
+                            film_show.Enabled = false;
+                            dload.Enabled = false;
+                            dload.Text = $"Скачать фильм";
+                        }
+                        break;
+                    case 2:
+                        quality = "720.mp4";
+                        nsource = $"{source}{quality}";
+                        if (CheckURL(new Uri(nsource)) == true)
+                        {
+                            try
+                            {
+                                film_show.Enabled = true;
+                                nsource = $"{source}{quality}";
+                                dload.Text = $"Скачать фильм({GetFileSize(new Uri(nsource))})";
+                                dload.Enabled = true;
+                            }
+                            catch
+                            {
+                                dload.Text = $"Скачать фильм";
+                            }
+                        }
+                        else
+                        {
+                            film_show.Enabled = false;
+                            dload.Enabled = false;
+                            dload.Text = $"Скачать фильм";
+                        }
+                        break;
+                    case 3:
+                        quality = "1080.mp4";
+                        nsource = $"{source}{quality}";
+                        if (CheckURL(new Uri(nsource)) == true)
+                        {
+                            try
+                            {
+                                film_show.Enabled = true;
+                                nsource = $"{source}{quality}";
+                                dload.Text = $"Скачать фильм({GetFileSize(new Uri(nsource))})";
+                                dload.Enabled = true;
+                            }
+                            catch
+                            {
+                                dload.Text = $"Скачать фильм";
+                            }
+                        }
+                        else
+                        {
+                            film_show.Enabled = false;
+                            dload.Enabled = false;
+                            dload.Text = $"Скачать фильм";
+                        }
+                        break;
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        public async Task<string> GetStreamLink(string url)
+        {
+            var requester = new DefaultHttpRequester("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/69.0");
+            var config = Configuration.Default.WithDefaultLoader().With(requester);
+            var document = await BrowsingContext.New(config).OpenAsync(url);
+
+            var get_script = document.QuerySelector("div[id='player-videocdn']");
+
+            var stream = get_script.ToHtml();
+            var str = stream.Trim().Split(';');
+            var st = str[3].Replace("var src =", "").Replace("+", "").Replace("'", "").Trim();
+            stream_url = st;
+
+            return stream_url;
+        }
+
+        public async Task<string> GetVideoSource(string url)
+        {
+            var requester = new DefaultHttpRequester("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/69.0");
+            var config = Configuration.Default.WithDefaultLoader().With(requester);
+            var document = await BrowsingContext.New(config).OpenAsync(url);
+
+            var source_box = document.QuerySelectorAll("input[type='hidden']");
+            var uri = source_box[1].OuterHtml.Split(' ');
+
+            var str = uri[7].Split('/');
+            var st = (str[2] + str[3] + str[4] + str[5]).Replace("\\", "/");
+            var link = $"https://{st}";
+            source = link;
+
+            return source;
+
+        }
+
+        static bool CheckURL(Uri url)
+        {
+            if (String.IsNullOrEmpty(url.AbsoluteUri))
+                return false;
+
+            var request = HttpWebRequest.Create(url);
+            try
+            {
+                HttpWebResponse res = request.GetResponse() as HttpWebResponse;
+
+                if (res.StatusDescription == "OK")
+                    return true;
+            }
+            catch
+            {
+            }
+            return false;
+        }
+
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                await GetVideoSource(stream_url);
+                var nsource = $"{source}{quality}";
+                System.Diagnostics.Process.Start("wmplayer.exe", nsource);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show($"К сожалению видео не доступно", "Online Video Player", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            title.Text = $"{quality_list.SelectedIndex}";
+        }
+
+        private async void dload_Click(object sender, EventArgs e)
+        {
+            var path = Application.StartupPath;
+            try
+            {
+                await GetVideoSource(stream_url);
+                var nsource = $"{source}{quality}";
+                //textBox1.Text = nsource;
+                // MessageBox.Show(Path.Combine(path, $"{fname}({chooseQuality.SelectedItem}).mp4"));
+                using (WebClient client = new WebClient())
+                {
+                    client.DownloadProgressChanged += (s, a) => { loading.Value = a.ProgressPercentage; loading.Progress = $"{a.ProgressPercentage}%"; status.Text = $"Качаем видео - {fname}"; };
+
+                    //client.DownloadFileAsync(new Uri(nsource), Path.Combine(path, $"{fname}({chooseQuality.SelectedItem}).mp4"));
+                    if (nsource != null)
+                    {
+                        SaveFileDialog savedialog = new SaveFileDialog();
+                        savedialog.Title = "Сохранить видео как...";
+                        savedialog.OverwritePrompt = true;
+                        savedialog.CheckPathExists = true;
+                        savedialog.Filter = "MP4 Video File(*.mp4)|*.mp4|All files (*.*)|*.*";
+                        savedialog.ShowHelp = true;
+                        var saveFileName = $"{fname}({quality_list.SelectedItem}).mp4";
+                        savedialog.FileName = saveFileName;
+                        if (savedialog.ShowDialog() == DialogResult.OK)
+                        {
+
+                            try
+                            {
+                                //image.Save(savedialog.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                                client.DownloadFileAsync(new Uri(nsource), savedialog.FileName);
+                            }
+                            catch
+                            {
+                                MessageBox.Show("Невозможно сохранить видео", "Ошибка",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }
+                    }
+
+                    client.DownloadFileCompleted += delegate { loading.Value = 0; loading.Progress = "Загрузка завершена"; status.Text = "Готов"; };
+                }
+            }
+            catch (Exception ex1)
+            {
+                MessageBox.Show($"К сожалению видео не доступно", "Online Video Player", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
     }
 }
