@@ -673,11 +673,6 @@ namespace OPlayer
             }
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            title.Text = $"{quality_list.SelectedIndex}";
-        }
-
         private async void dload_Click(object sender, EventArgs e)
         {
             var path = Application.StartupPath;

@@ -31,7 +31,6 @@ namespace OPlayer
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.top = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.exit = new System.Windows.Forms.Button();
@@ -56,7 +55,6 @@ namespace OPlayer
             this.status = new System.Windows.Forms.ToolStripStatusLabel();
             this.loading = new OPlayer.MyProgressBar();
             this.bar = new OPlayer.MyProgressBar();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.top.SuspendLayout();
             this.forma.SuspendLayout();
             this.main.SuspendLayout();
@@ -402,11 +400,6 @@ namespace OPlayer
             this.bar.TabIndex = 9;
             this.bar.Value = 0;
             // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
             // mainform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -462,7 +455,6 @@ namespace OPlayer
         private System.Windows.Forms.Button dload;
         private OPlayer.MyProgressBar loading;
         private OPlayer.MyProgressBar bar;
-        private Timer timer1;
     }
 }
 
